@@ -855,9 +855,12 @@ class WPI_UI {
       if ( !empty( $_REQUEST[ 'wpi' ][ 'new_invoice' ][ 'template_copy' ] ) ) {
         $this_invoice->load_template( "id={$_REQUEST[ 'wpi' ][ 'new_invoice' ]['template_copy']}" );
       }
-
+      
       // Set user and determine type
-      $this_invoice->load_user( "email={$_REQUEST[ 'wpi' ][ 'new_invoice' ]['user_email']}" );
+      $args = array('email'=>$_REQUEST[ 'wpi' ][ 'new_invoice' ]['user_email']); 
+      $args = apply_filters('load_user_preprocess',$args,$_REQUEST['wpi']);
+      $this_invoice->load_user($args);
+      //$this_invoice->load_user( "email={$_REQUEST[ 'wpi' ][ 'new_invoice' ]['user_email']}" );
 
       // Add custom data if user doesn't exist.
       if ( empty( $this_invoice->data[ 'user_data' ] ) ) {
